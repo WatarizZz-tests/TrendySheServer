@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -14,12 +13,13 @@ dotenv.config();
 
 const allowedOrigins = [
     'http://localhost:3000',
-    'http://localhost:3001'
+    'http://localhost:3001',
+    'https://trendy-she-website.vercel.app' // Add your Vercel domain here
 ];
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost:3000')) {
+        if (!origin || allowedOrigins.includes(origin) || origin.startsWith('https://trendy-she-website.vercel.app')) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -41,12 +41,10 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
     console.error('Error connecting to MongoDB', error);
 });
 
-
 app.use('/api/products', productRoutes); 
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
-
 
 app.get('/', (req, res) => {
     res.send('API is running...');
@@ -55,3 +53,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
